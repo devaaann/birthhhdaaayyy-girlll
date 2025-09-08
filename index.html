@@ -32,18 +32,18 @@
 
     footer { text-align:center; padding:15px; font-size:13px; opacity:.7; }
 
-    /* floating emoji */
+    /* emoji jatuh */
     .emoji {
       position: fixed;
-      bottom: -40px;
+      top: -40px;
       font-size: 24px;
-      animation: rise 8s linear infinite;
-      opacity: 0.9;
+      animation: fall linear forwards;
       pointer-events: none;
+      z-index: 9999;
     }
-    @keyframes rise {
-      from { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.9; }
-      to { transform: translateY(-110vh) translateX(-40px) rotate(360deg); opacity: 0; }
+    @keyframes fall {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
@@ -85,18 +85,18 @@
   </div>
 
   <script>
-    const emojis = ["🎈","💖","✨","🌟","🎉","🎂","🌸","🫶"];
+    const emojis = ["🎉","✨","💖","🎂","🌸","🎈","🫶"];
     function spawnEmoji(){
       const e = document.createElement("div");
       e.className = "emoji";
       e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
       e.style.left = Math.random()*100 + "vw";
-      e.style.fontSize = (20 + Math.random()*20) + "px";
-      e.style.animationDuration = (5 + Math.random()*5) + "s";
+      e.style.fontSize = (20 + Math.random()*24) + "px";
+      e.style.animationDuration = (4 + Math.random()*4) + "s";
       document.body.appendChild(e);
-      setTimeout(()=>e.remove(),10000);
+      setTimeout(()=>e.remove(),8000);
     }
-    setInterval(spawnEmoji,600);
+    setInterval(spawnEmoji,400);
   </script>
 </body>
 </html>
