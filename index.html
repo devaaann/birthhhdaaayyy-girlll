@@ -15,7 +15,7 @@
       --card: #ffffff;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Poppins', sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
     .wrap { min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
     header { text-align: center; padding: 28px 18px 10px; }
     header h1 { margin: 0; font-family: 'Pacifico', cursive; font-size: clamp(28px,6vw,56px); color: var(--primary); }
@@ -27,15 +27,24 @@
     .content { padding: 18px; line-height: 1.7; font-size: 16px; }
     .quote { background:#f1f6ff; border-left:6px solid var(--accent); padding:12px; border-radius:10px; margin-bottom: 12px; font-style: italic; }
 
-    .btns { display:flex; justify-content:center; gap:10px; padding: 0 0 20px; }
-    button { border:0; padding:12px 18px; border-radius:999px; font-weight:700; cursor:pointer; color:#fff; }
-    #confettiBtn { background: var(--primary); }
-    #shakeBtn { background: var(--accent); }
-
     .gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:10px; padding:12px; }
     .gallery img { width:100%; height:100%; object-fit: cover; border-radius:12px; }
 
     footer { text-align:center; padding:15px; font-size:13px; opacity:.7; }
+
+    /* floating emoji */
+    .emoji {
+      position: fixed;
+      bottom: -40px;
+      font-size: 24px;
+      animation: rise 8s linear infinite;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    @keyframes rise {
+      from { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.9; }
+      to { transform: translateY(-110vh) translateX(-40px) rotate(360deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -57,10 +66,6 @@
           <p>Pasti kamu udah gaasing lagi sama lirik itu—lagu Tulus <b>favv aku</b>—dan lirik itu akan selalu related! Hari ini, 9 September 2025 akhirnya kamu <b>Thea Juvena Hosianna</b> nyentuh umur <b>17 tahun</b>! Walaupun aku belum hadir di umur-umur kamu sebelumnya, aku yakin <b>banyakk bangeeettt</b> yang berhasil kamu capai. Makasihh perjuangan 16 tahun terakhir iniii, <b>u did great oci!</b> Dan <b>selamat ulaangg tahunn kee 17 yaaaaaa!!!!</b> Cant wait for your next journeyy!!!</p>
           <p>Aku bakal pastiin kalo lirik lagu itu akan selalu related dan kamu rasain di setiap perjalanan kamu. Suatu kebanggaan tersendiri bagi aku untuk jadi salah satu yang terdekat buat kamu, oci. <b>Selamat ulang tahun fav person aku</b>—wish you all the best, God bless you. <b>Semoga yang kamu semogakan tersemogakan yaa</b>, doa terbaik buat kamuu!!</p>
         </div>
-        <div class="btns">
-          <button id="confettiBtn">Tembak Konfeti 🎊</button>
-          <button id="shakeBtn">Yeay 🎉</button>
-        </div>
       </section>
 
       <section class="card">
@@ -79,50 +84,19 @@
     <footer>Made with ❤️ • Happy 17th Thea!</footer>
   </div>
 
-  <!-- Canvas confetti -->
-  <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
   <script>
-    const canvas = document.getElementById("confettiCanvas");
-    const ctx = canvas.getContext("2d");
-    let W = canvas.width = window.innerWidth;
-    let H = canvas.height = window.innerHeight;
-    let confetti = [];
-
-    function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    window.addEventListener("resize", resize);
-
-    function createConfetti(x,y,count=150){
-      for(let i=0;i<count;i++){
-        confetti.push({
-          x, y,
-          dx:(Math.random()-0.5)*6,
-          dy:Math.random()*-6-2,
-          size:Math.random()*8+4,
-          color:`hsl(${Math.random()*360},100%,60%)`,
-          life:100
-        });
-      }
+    const emojis = ["🎈","💖","✨","🌟","🎉","🎂","🌸","🫶"];
+    function spawnEmoji(){
+      const e = document.createElement("div");
+      e.className = "emoji";
+      e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      e.style.left = Math.random()*100 + "vw";
+      e.style.fontSize = (20 + Math.random()*20) + "px";
+      e.style.animationDuration = (5 + Math.random()*5) + "s";
+      document.body.appendChild(e);
+      setTimeout(()=>e.remove(),10000);
     }
-    function draw(){
-      ctx.clearRect(0,0,W,H);
-      confetti.forEach((p,i)=>{
-        ctx.fillStyle=p.color;
-        ctx.fillRect(p.x,p.y,p.size,p.size);
-        p.x+=p.dx; p.y+=p.dy; p.dy+=0.2; p.life--;
-        if(p.life<=0) confetti.splice(i,1);
-      });
-      requestAnimationFrame(draw);
-    } draw();
-
-    document.getElementById("confettiBtn").addEventListener("click", e=>{
-      const rect=e.target.getBoundingClientRect();
-      createConfetti(rect.left+rect.width/2, rect.top+rect.height/2+window.scrollY, 200);
-    });
-
-    document.getElementById("shakeBtn").addEventListener("click", ()=>{
-      createConfetti(W/2,H/2,250);
-      if(navigator.vibrate) navigator.vibrate([100,50,100]);
-    });
+    setInterval(spawnEmoji,600);
   </script>
 </body>
 </html>
