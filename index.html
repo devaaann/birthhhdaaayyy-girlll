@@ -18,7 +18,7 @@
     }
 
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: 'Poppins', sans-serif; }
+    html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
 
     .wrap { min-height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
     header { position: relative; padding: 28px 18px 10px; text-align: center; }
@@ -29,6 +29,7 @@
       letter-spacing: .5px;
       color: var(--primary);
       text-shadow: 0 3px 0 rgba(0,0,0,.06);
+      animation: pop 0.9s ease both;
     }
     header .subtitle { font-weight: 600; font-size: clamp(14px, 3.2vw, 18px); opacity: .8; }
     header .badge {
@@ -38,6 +39,7 @@
       font-weight: 800; box-shadow: 0 6px 18px rgba(255, 122, 182, .35);
       transform: rotate(8deg);
     }
+    @keyframes pop { from { transform: scale(.8); opacity: 0 } to { transform: scale(1); opacity: 1 } }
 
     .card {
       width: min(920px, 92vw);
@@ -48,13 +50,22 @@
       overflow: hidden;
       border: 1px solid #f1e9f4;
     }
-    .hero { aspect-ratio: 16/9; overflow: hidden; }
-    .hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(1.05) contrast(1.03); }
+    .hero .overlay {
+      position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 0%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%);
+      pointer-events: none;
+    }
+    .ribbon {
+      position: absolute; left: -12px; top: 14px; background: var(--accent);
+      color: white; padding: 8px 16px; font-weight: 700; transform: rotate(-6deg);
+      border-radius: 10px; box-shadow: 0 10px 18px rgba(122,166,255,.35);
+    }
 
     .content { padding: 18px 16px 22px; line-height: 1.7; font-size: clamp(15px, 3.6vw, 18px); }
     .quote {
       background: #f1f6ff; color: #2c3e66; border-left: 6px solid var(--accent);
-      padding: 14px; border-radius: 12px; margin: 8px 0 16px;
+      padding: 14px 14px 14px 16px; border-radius: 12px; margin: 8px 0 16px;
       font-weight: 600; font-style: italic;
     }
     .msg span.sparkle { background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
@@ -62,18 +73,35 @@
     .btns { display: flex; gap: 10px; flex-wrap: wrap; padding: 12px 16px 22px; justify-content: center; }
     button {
       border: 0; padding: 12px 18px; border-radius: 999px; font-weight: 700;
-      background: var(--primary); color: white; cursor: pointer;
-      box-shadow: 0 10px 20px rgba(255,122,182,.3);
+      background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(255,122,182,.3);
+      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease; cursor: pointer;
     }
-    button.secondary { background: var(--accent); }
+    button.secondary { background: var(--accent); box-shadow: 0 10px 20px rgba(122,166,255,.3); }
+    button:active { transform: translateY(2px) scale(.98); }
 
     .gallery {
       display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); padding: 12px;
     }
-    .gallery figure { margin: 0; border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; }
+    .gallery figure {
+      margin: 0; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 3/4;
+      box-shadow: 0 12px 22px rgba(56,52,81,.12);
+    }
     .gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     footer { text-align: center; padding: 18px; font-size: 13px; opacity: .7; }
+
+    /* floating emojis */
+    .floaty { position: fixed; bottom: -40px; left: 50%; width: 18px; height: 18px; pointer-events: none; }
+    .floaty span { position: absolute; animation: rise 6s linear infinite; opacity: .8 }
+    @keyframes rise {
+      from { transform: translateY(0) translateX(0) rotate(0deg); opacity: .9 }
+      to { transform: translateY(-100vh) translateX(-40px) rotate(360deg); opacity: 0 }
+    }
+
+    /* responsive */
+    @media (min-width: 760px) {
+      .gallery { grid-template-columns: repeat(4, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -81,18 +109,21 @@
     <header>
       <div class="badge">17 ✨</div>
       <h1>Happy Birthday, Thea! 🎉</h1>
-      <div class="subtitle">9 September 2025 • Sweet Seventeen 💖</div>
+      <div class="subtitle">9 September 2025 • My fav person 💖</div>
     </header>
 
     <main>
       <section class="card hero">
-        <img src="assets/photo1.jpeg" alt="Thea main photo">
+        <span class="ribbon">Make a wish!</span>
+        <img src="assets/img1.jpg" alt="Thea singing">
+        <div class="overlay"></div>
       </section>
 
       <section class="card">
         <div class="content">
           <p class="quote">“bila aku pegang kendali penuh pada cahaya, aku pastikan jalanmu terang”.</p>
-          <p class="msg">"bila aku pegang kendali penuh pada cahaya, aku pastikan jalanmu terang". pasti kamu udah gaasing lagi sama lirik itu, lagu tulus favv aku tuh dan lirik itu akan selalu related!. hari ini 9 September 2025 akhirnya kamu Thea Juvena Hosianna nyentuh umur 17 tahun!. walaupun aku belum hadir diumur umur kamu sebelumnya, aku yakin pasti banyakk bangeeettt yang berhasil kamu capai. makasihh perjuangan 16 tahun terakhir iniii, u did great oci! dan selamat ulaangg tahunn kee 17 yaaaaaa!!!! cant wait for your next journeyy!!!. aku bakal pastiin kalo lirik lagu itu akan selalu related dan kamu rasain disetiap perjalanan kamu, suatu kebanggan tersendiri bagi aku untuk jadi salah satu yang terdekat buat kamu oci. selamat ulang tahun fav person aku, wish you all the best, God bless you, semoga yang kamu semogakan tersemogakan yaa, doa terbaik buat kamuu!!</p>
+          <p class="msg">Pasti kamu udah gaasing lagi sama lirik itu—lagu Tulus <span class="sparkle">favv aku</span>—dan lirik itu akan selalu related! Hari ini, <b>9 September 2025</b> akhirnya kamu <b>Thea Juvena Hosianna</b> nyentuh umur <b>17 tahun</b>! Walaupun aku belum hadir di umur-umur kamu sebelumnya, aku yakin <b>banyakk bangeeettt</b> yang berhasil kamu capai. Makasihh perjuangan 16 tahun terakhir iniii, <b>u did great oci!</b> Dan <b>selamat ulaangg tahunn kee 17 yaaaaaa!!!!</b> Cant wait for your next journeyy!!!</p>
+          <p class="msg">Aku bakal pastiin kalo lirik lagu itu akan selalu related dan kamu rasain di setiap perjalanan kamu. Suatu kebanggaan tersendiri bagi aku untuk jadi salah satu yang terdekat buat kamu, oci. <b>Selamat ulang tahun fav person aku</b>—wish you all the best, God bless you. <b>Semoga yang kamu semogakan tersemogakan yaa</b>, doa terbaik buat kamuu!!</p>
         </div>
         <div class="btns">
           <button id="confettiBtn">Tembak Konfeti 🎊</button>
@@ -105,22 +136,97 @@
           <h2 style="margin:0 0 8px; font-size:clamp(20px,5vw,28px)">Best Pict of U</h2>
         </div>
         <div class="gallery">
-          <figure><img src="assets/photo1.jpeg" alt="Foto 1"></figure>
-          <figure><img src="assets/photo2.jpeg" alt="Foto 2"></figure>
-          <figure><img src="assets/photo3.jpeg" alt="Foto 3"></figure>
-          <figure><img src="assets/photo4.jpeg" alt="Foto 4"></figure>
+          <figure>
+            <img src="assets/img2.jpg" alt="Selfie bareng teman">
+          </figure>
+          <figure>
+            <img src="assets/img3.jpg" alt="Foto candid kamera">
+          </figure>
+          <figure>
+            <img src="assets/img4.jpg" alt="Pakai yukata & kipas">
+          </figure>
+          <figure>
+            <img src="assets/img1.jpg" alt="Nyanyi di panggung">
+          </figure>
         </div>
       </section>
     </main>
 
-    <footer>Made with ❤️ • Happy 17th Thea!</footer>
+    <footer>Made with ❤️ + gula-gula virtual • © 2025</footer>
   </div>
 
+  <!-- tiny confetti + phone vibration -->
+  <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none;"></canvas>
+  <div class="floaty" aria-hidden="true" id="floaty"></div>
   <script>
-    // Confetti sederhana
-    const btn = document.getElementById('confettiBtn');
-    btn.addEventListener('click', ()=>alert("🎉 Confetti! (efek bisa ditambah)"));
-    document.getElementById('shakeBtn').addEventListener('click', ()=>alert("🎂 Yeay!"));
+    // Floating emoji generator
+    const emojis = ["🎈","💖","✨","🌟","🎉","🫶","🌸"];
+    const floaty = document.getElementById('floaty');
+    function spawnEmoji(){
+      const s = document.createElement('span');
+      s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      s.style.left = (Math.random()*100-50) + 'vw';
+      s.style.fontSize = (12 + Math.random()*18) + 'px';
+      s.style.animationDuration = (5 + Math.random()*5) + 's';
+      floaty.appendChild(s);
+      setTimeout(() => s.remove(), 11000);
+    }
+    setInterval(spawnEmoji, 900);
+
+    // Confetti (no library)
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let W, H, pieces = [];
+    function resize(){
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    } resize();
+    window.addEventListener('resize', resize);
+
+    function burst(x=W/2, y=H/2, amount=180) {
+      for (let i=0; i<amount; i++) {
+        pieces.push({
+          x, y,
+          r: 3 + Math.random()*4,
+          a: Math.random()*Math.PI*2,
+          v: 2 + Math.random()*6,
+          g: 0.07 + Math.random()*0.06,
+          s: Math.random()*0.1 + 0.02,
+          hue: Math.random()<.5 ? 330 + Math.random()*40 : 210 + Math.random()*40,
+          life: 80 + Math.random()*40
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0,0,W,H);
+      for (let i=pieces.length-1; i>=0; i--) {
+        const p = pieces[i];
+        p.v *= 0.992;
+        p.x += Math.cos(p.a)*p.v;
+        p.y += Math.sin(p.a)*p.v + p.g*p.life*0.02;
+        p.a += p.s;
+        p.life--;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.a);
+        ctx.fillStyle = 'hsl(' + p.hue + 'deg 90% 60%)';
+        ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.4);
+        ctx.restore();
+        if (p.life<=0) pieces.splice(i,1);
+      }
+      requestAnimationFrame(draw);
+    } draw();
+
+    document.getElementById('confettiBtn').addEventListener('click', (e)=>{
+      const rect = e.target.getBoundingClientRect();
+      burst(rect.left + rect.width/2, rect.top + rect.height/2 + window.scrollY, 200);
+      if (navigator.vibrate) navigator.vibrate(120);
+    });
+
+    document.getElementById('shakeBtn').addEventListener('click', ()=>{
+      if (navigator.vibrate) navigator.vibrate([60,40,60,40,120]);
+      burst(W/2, H*0.7, 260);
+    });
   </script>
 </body>
 </html>
