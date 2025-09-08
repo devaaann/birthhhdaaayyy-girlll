@@ -136,10 +136,18 @@
           <h2 style="margin:0 0 8px; font-size:clamp(20px,5vw,28px)">Best Pict of U</h2>
         </div>
         <div class="gallery">
-          <figure><img src="assets/img2.jpg" alt="Foto 1"></figure>
-          <figure><img src="assets/img3.jpg" alt="Foto 2"></figure>
-          <figure><img src="assets/img4.jpg" alt="Foto 3"></figure>
-          <figure><img src="assets/img1.jpg" alt="Foto 4"></figure>
+          <figure>
+            <img src="assets/img2.jpg" alt="Selfie bareng teman">
+          </figure>
+          <figure>
+            <img src="assets/img3.jpg" alt="Foto candid kamera">
+          </figure>
+          <figure>
+            <img src="assets/img4.jpg" alt="Pakai yukata & kipas">
+          </figure>
+          <figure>
+            <img src="assets/img1.jpg" alt="Nyanyi di panggung">
+          </figure>
         </div>
       </section>
     </main>
@@ -147,7 +155,7 @@
     <footer>Made with ❤️ + gula-gula virtual • © 2025</footer>
   </div>
 
-  <!-- confetti + phone vibration -->
+  <!-- tiny confetti + phone vibration -->
   <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none;"></canvas>
   <div class="floaty" aria-hidden="true" id="floaty"></div>
   <script>
@@ -165,7 +173,7 @@
     }
     setInterval(spawnEmoji, 900);
 
-    // Confetti system
+    // Confetti (no library)
     const canvas = document.getElementById('confetti');
     const ctx = canvas.getContext('2d');
     let W, H, pieces = [];
@@ -209,14 +217,12 @@
       requestAnimationFrame(draw);
     } draw();
 
-    // Tombol konfeti
     document.getElementById('confettiBtn').addEventListener('click', (e)=>{
       const rect = e.target.getBoundingClientRect();
       burst(rect.left + rect.width/2, rect.top + rect.height/2 + window.scrollY, 200);
       if (navigator.vibrate) navigator.vibrate(120);
     });
 
-    // Tombol yeay
     document.getElementById('shakeBtn').addEventListener('click', ()=>{
       if (navigator.vibrate) navigator.vibrate([60,40,60,40,120]);
       burst(W/2, H*0.7, 260);
